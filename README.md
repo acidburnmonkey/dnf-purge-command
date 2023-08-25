@@ -1,0 +1,1 @@
+# dnf-purge-command
