@@ -43,17 +43,17 @@ class Purge(dnf.cli.Command):
         string_pack = []
         exclude = set([])
 
-        word = pacages[0]
+        inxex1 = pacages[0]
 
-        string_pack.append(word)
-        string_pack.append(word.capitalize())
-        string_pack.append(word.upper())
-        string_pack.append('.' + word)
-        string_pack.append('.' + word.upper())
-        string_pack.append('.' + word.capitalize())
+        string_pack.append(inxex1)
+        string_pack.append(inxex1.capitalize())
+        string_pack.append(inxex1.upper())
+        string_pack.append('.' + inxex1)
+        string_pack.append('.' + inxex1.upper())
+        string_pack.append('.' + inxex1.capitalize())
 
         #call DNF for unistall 
-        subprocess.run(f'dnf remove {word}', shell=True)
+        subprocess.run(f'dnf remove {inxex1}', shell=True)
 
         # walk for directories
         for root , directoryes , files in os.walk(home):
