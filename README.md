@@ -4,6 +4,8 @@ This is a plugin for DNF . It will call for uninstallation of the given package 
 ## Installation 
 Simply copy the-purge.py into your current version of python. For example current version : /lib/python3.11/site-packages/dnf-plugins.
 
+check by using ``` python3 --version ```
+
 > or follow this commands
 ```
 	git clone https://github.com/acidburnmonkey/dnf-purge-command.git
@@ -14,10 +16,9 @@ Simply copy the-purge.py into your current version of python. For example curren
 ## Usage
 Just call it from terminal 
 ```
-sudo dnf purge <package>
+sudo dnf purge package1 package2 package3
 ```
- Warning : It can only purge one package at the time , subject to change.
-
+Recently added support to purge same amout as arguments dnf takes 
 
 
 # Donate
