@@ -30,15 +30,18 @@ class Purge(dnf.cli.Command):
     @staticmethod
     def set_argparser(parser):
         parser.add_argument('packages', nargs='+',help=_('packages to check'))
+        parser.add_argument('--nuke', dest='nuke', action='store_true' ,help=_('Nucke option do not use , this will try to manually remove binaries and servises, Only takes 1 argument'))
 
     def run(self):
+
         """Execute the util action here."""
-        pacages = list(self.opts.packages)      
+        
         user = os.getenv("SUDO_USER")
         if user is None:
             print ("This program needs 'sudo'")
             exit()
 
+        pacages = list(self.opts.packages)      
         home = os.path.join('/home', os.getlogin())
 
         show_user =[]
@@ -52,6 +55,16 @@ class Purge(dnf.cli.Command):
             string_pack.append('.' + index)
             string_pack.append('.' + index.upper())
             string_pack.append('.' + index.capitalize())
+
+        #--nuke sitch here
+        if self.opts.nuke == True:
+            binary_locations=['/usr/local/bin','/usr/bin','/bin']
+            for binaries in binary_locations:
+                check = os.listdir(binaries)
+                if pacages[0] in check:
+                    show_user.append(os.path.join(binaries,pacages[0]))
+            if os.path.exists(f'/etc/systemd/system/{pacages[0]}.service'):
+                show_user.append(f'/etc/systemd/system/{pacages[0]}.service')
 
         #call DNF for unistall 
         string_of_programs = ' '.join(pacages)
@@ -74,10 +87,12 @@ class Purge(dnf.cli.Command):
                     if pack == file:
                         show_user.append(os.path.join(root,file))
 
+        # time to see what deletes
         if len(show_user) < 1:
             print("No remaining files found for purging")
             sys.exit()
         print(f"The following directories and files will be deleted \n {show_user}")
+                    
 
 
         while True:
