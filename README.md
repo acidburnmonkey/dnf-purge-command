@@ -12,6 +12,7 @@ check by using ``` python3 --version ```
 	cd dnf-purge-command
 	sudo cp the-purge.py /lib/python3.11/site-packages/dnf-plugins
 ``` 
+
 ## Usage
 Just call it from terminal 
 ```
