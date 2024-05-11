@@ -10,7 +10,7 @@ check by using ``` python3 --version ```
 ```
 	git clone https://github.com/acidburnmonkey/dnf-purge-command.git
 	cd dnf-purge-command
-	sudo cp the-purge.py /lib/python3.11/site-packages/dnf-plugins
+	sudo cp the-purge.py /lib/python3.12/site-packages/dnf-plugins
 ``` 
 
 ## Usage

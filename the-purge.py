@@ -91,9 +91,9 @@ class Purge(dnf.cli.Command):
         if len(show_user) < 1:
             print("No remaining files found for purging")
             sys.exit()
-        print(f"The following directories and files will be deleted \n {show_user}")
-                    
-
+        print('The following directories and files will be deleted')
+        print('🮶  ',*show_user ,sep='\n' )
+        print('🮵  ')
 
         while True:
             ask = str(input("Delete thse files y/n :"))
