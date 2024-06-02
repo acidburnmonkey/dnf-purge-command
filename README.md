@@ -2,7 +2,7 @@
 This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal  dnf remove <package>  command .  It can also be used to check and remove old configs of programs that are not currently installed.
 
 ## Installation 
-Simply copy the-purge.py into your current version of python. For example current version : /lib/python3.11/site-packages/dnf-plugins.
+Simply copy the-purge.py into your current version of python. For example current version : /lib/python3.12/site-packages/dnf-plugins.
 
 check by using ``` python3 --version ```
 
