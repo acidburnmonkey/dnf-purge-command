@@ -26,11 +26,11 @@ class Purge(dnf.cli.Command):
         self.opts = None
         self.parser = None
 
-    # Aruments for dnf (package)
+    # Arguments for dnf (package)
     @staticmethod
     def set_argparser(parser):
         parser.add_argument('packages', nargs='+',help=_('packages to check'))
-        parser.add_argument('--nuke', dest='nuke', action='store_true' ,help=_('Nucke option do not use , this will try to manually remove binaries and servises, Only takes 1 argument'))
+        parser.add_argument('--nuke', dest='nuke', action='store_true' ,help=_('Nuke option do not use , this will try to manually remove binaries and servises, Only takes 1 argument'))
 
     def run(self):
 
@@ -38,7 +38,7 @@ class Purge(dnf.cli.Command):
         
         user = os.getenv("SUDO_USER")
         if user is None:
-            print ("This program needs 'sudo'")
+            print("This program needs 'sudo'")
             exit()
 
         pacages = list(self.opts.packages)      
@@ -56,7 +56,7 @@ class Purge(dnf.cli.Command):
             string_pack.append('.' + index.upper())
             string_pack.append('.' + index.capitalize())
 
-        #--nuke sitch here
+        #--nuke switch here
         if self.opts.nuke == True:
             binary_locations=['/usr/local/bin','/usr/bin','/bin']
             for binaries in binary_locations:
@@ -66,20 +66,20 @@ class Purge(dnf.cli.Command):
             if os.path.exists(f'/etc/systemd/system/{pacages[0]}.service'):
                 show_user.append(f'/etc/systemd/system/{pacages[0]}.service')
 
-        #call DNF for unistall 
+        #call DNF for uninstal 
         string_of_programs = ' '.join(pacages)
         subprocess.run(f'dnf remove {string_of_programs}', shell=True)
 
         # walk for directories
-        for root , directoryes , files in os.walk(home):
-            for directory in directoryes:
+        for root , directories , files in os.walk(home):
+            for directory in directories:
                 #packages loop
                 for pack in string_pack:
                     if pack == directory :
                         show_user.append(os.path.join(root,directory))
                         exclude.add(directory)
 
-        # walk for lose files
+        # walk for loose files
         for root, dirs, files in os.walk(home, topdown=True):
             [dirs.remove(d) for d in list(dirs) if d in exclude]
             for file in files:
@@ -96,7 +96,7 @@ class Purge(dnf.cli.Command):
         print('🮵  ')
 
         while True:
-            ask = str(input("Delete thse files y/n :"))
+            ask = str(input("Delete these files y/n :"))
             if ask.lower() == 'y':
                 for root in show_user:
                     try:
@@ -110,7 +110,7 @@ class Purge(dnf.cli.Command):
             elif ask.lower() == 'n':
                 sys.exit()
             else:
-                ask = str(input("Delete thse files y/n :"))
+                ask = str(input("Delete these files y/n :"))
 
 
 
