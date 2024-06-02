@@ -69,7 +69,7 @@ class Purge(dnf.cli.Command):
         #call DNF for uninstal 
         string_of_programs = ' '.join(pacages)
         subprocess.run(f'dnf remove {string_of_programs}', shell=True)
-
+        
         # walk for directories
         for root , directories , files in os.walk(home):
             for directory in directories:
@@ -87,6 +87,7 @@ class Purge(dnf.cli.Command):
                     if pack == file:
                         show_user.append(os.path.join(root,file))
 
+        print('\n' ,60 * '=')
         # time to see what deletes
         if len(show_user) < 1:
             print("No remaining files found for purging")
