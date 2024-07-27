@@ -4,7 +4,8 @@ or check your current version : python --version
 https://github.com/acidburnmonkey/dnf-purge-command
 '''
 
-
+import time
+import threading
 from dnfpluginscore import _, logger
 from dnf.cli.option_parser import OptionParser
 import dnf
@@ -13,6 +14,23 @@ import shutil
 import sys
 import subprocess
 import dnf.cli
+
+
+# the spinner thread
+
+flag = threading.Event()
+
+def spinner():
+    symbols = ['⣾', '⣷', '⣯', '⣟', '⡿', '⢿', '⣻', '⣽']  
+    i = 0  
+    while not flag.is_set():  
+        i = (i + 1) % len(symbols)  
+        print('\r\033[K%s Searching...' % symbols[i], flush=True, end='\r')  
+        time.sleep(0.1)
+    # Clear the spinner line after the thread finishes
+    print(' ' * 20, end='\r')  
+
+t1 = threading.Thread(target=spinner)
 
 # Registering the Command
 @dnf.plugin.register_command
@@ -31,6 +49,7 @@ class Purge(dnf.cli.Command):
     def set_argparser(parser):
         parser.add_argument('packages', nargs='+',help=_('packages to check'))
         parser.add_argument('--nuke', dest='nuke', action='store_true' ,help=_('Nuke option do not use , this will try to manually remove binaries and servises, Only takes 1 argument'))
+
 
     def run(self):
 
@@ -70,6 +89,7 @@ class Purge(dnf.cli.Command):
         string_of_programs = ' '.join(pacages)
         subprocess.run(f'dnf remove {string_of_programs}', shell=True)
         
+        t1.start()
         # walk for directories
         for root , directories , files in os.walk(home):
             for directory in directories:
@@ -86,7 +106,10 @@ class Purge(dnf.cli.Command):
                 for pack in string_pack:
                     if pack == file:
                         show_user.append(os.path.join(root,file))
-
+        
+        #stop spinner
+        flag.set()
+        t1.join()
         print('\n' ,60 * '=')
         # time to see what deletes
         if len(show_user) < 1:
@@ -112,7 +135,4 @@ class Purge(dnf.cli.Command):
                 sys.exit()
             else:
                 ask = str(input("Delete these files y/n :"))
-
-
-
 
