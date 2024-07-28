@@ -1,5 +1,5 @@
 Name:           purge-command
-Version:        1.2
+Version:        1.3
 Release:        1%{?dist}
 Summary:        This is a plugin for DNF that is similar to the apt purge functionality
 
@@ -8,8 +8,8 @@ URL:            https://github.com/acidburnmonkey/dnf-purge-command
 Source0:        %{name}-%{version}.tar.gz
 
 BuildArch:      noarch
-Requires:       python3.12
-BuildRequires:  python3.12  
+Requires:       bash python3.12
+BuildRequires:  bash python3.12  
 
 %description
 This is a plugin for DNF that aims to bring the apt purge functionality
@@ -23,14 +23,22 @@ tar -xzf %{SOURCE0}
 %build
 
 %install
-# Create the necessary directory in the build root
-mkdir -p %{buildroot}/lib/python3.12/site-packages/dnf-plugins
+# Remove any existing build root to start clean
+rm -rf %{buildroot}
+
+# Get Python 3 version
+PYTHON_VERSION=$(python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}')
+INSTALL_DIR="%{buildroot}/lib/python${PYTHON_VERSION}/site-packages/dnf-plugins"
+
+# Create the necessary directory
+mkdir -p ${INSTALL_DIR}
 
 # Copy the script to the build root directory
-cp -a the-purge.py %{buildroot}/lib/python3.12/site-packages/dnf-plugins/
+cp -a the-purge.py ${INSTALL_DIR}/the-purge.py
 
 %files
-/lib/python3.12/site-packages/dnf-plugins/the-purge.py
+%defattr(-,root,root,-)
+/lib/python*/site-packages/dnf-plugins/the-purge.py
 
 %changelog
 * Sat Jul 27 2024  acidburnmonkey  acidburnmonkey@gmail.com - 1.0-1
