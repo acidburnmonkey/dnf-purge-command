@@ -29,6 +29,3 @@ public:
 
 }  // namespace dnf5
 
-
-
-#endif  // DNF_COMMANDS_DOWNLOAD_TEMPLATE_ARGUMENTS_HPP
