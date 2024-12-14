@@ -1,8 +1,6 @@
 #!/bin/python3
 
 '''
-plugins go into /lib/python3.12/site-packages/dnf-plugins
-or check your current version : python --version
 https://github.com/acidburnmonkey/dnf-purge-command
 '''
 
@@ -15,7 +13,6 @@ import subprocess
 import argparse
 
 # the spinner thread
-
 flag = threading.Event()
 
 def spinner():
