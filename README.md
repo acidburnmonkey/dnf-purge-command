@@ -1,8 +1,8 @@
 # dnf-purge-command
 This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal  dnf remove <package>  command .  It can also be used to check and remove old configs of programs that are not currently installed.
 
-## ⚠️ Warnig currently not working with dnf5
-
+## ⚠️ Warnig currently de-coupled from dnf5
+Until I can register it as a command again <br>
 Am working on porting it but the plugging creation tool are bugged https://github.com/rpm-software-management/dnf5/issues/1913#issuecomment-2539206186
 
 
@@ -13,28 +13,25 @@ sudo dnf copr enable acidburnmonkey/purge-command
 sudo dnf install purge-command
 ```
 ### Manual Installation
-Simply copy the-purge.py into your current version of python. For example current version : /lib/python3.12/site-packages/dnf-plugins.
 
-check by using ``` python3 --version ```
-
-> or follow this commands
 ```
 	git clone https://github.com/acidburnmonkey/dnf-purge-command.git
 	cd dnf-purge-command
-	sudo cp the-purge.py /lib/python3.12/site-packages/dnf-plugins
+	sudo cp the-purge.py /usr/bin/purge
+        sudo chmod +x /usr/bin/purge
 ``` 
 
 ## Usage
 Just call it from terminal 
 ```
-sudo dnf purge package1 package2 package3
+sudo  purge package1 package2 package3
 ```
 Recently added support to purge same amout as arguments dnf takes 
 
 ### Switch with --nuke
 This will try to manually remove binaries not detected by dnf + any associated service , dont use unless you realy overtaken by rage.
 ```
-sudo dnf purge --nuke package
+sudo purge --nuke package
 ```
 
 
