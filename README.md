@@ -1,7 +1,7 @@
 # dnf-purge-command
 This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal  dnf remove <package>  command .  It can also be used to check and remove old configs of programs that are not currently installed.
 
-## ⚠️ Warnig currently de-coupled from dnf5
+## Currently de-coupled from dnf5
 Until I can register it as a command again <br>
 Am working on porting it but the plugging creation tool are bugged https://github.com/rpm-software-management/dnf5/issues/1913#issuecomment-2539206186
 
