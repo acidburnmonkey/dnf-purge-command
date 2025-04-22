@@ -26,7 +26,7 @@ Just call it from terminal
 ```
 sudo  purge package1 package2 package3
 ```
-Recently added support to purge same amout as arguments dnf takes 
+Recently added support to purge same amount as arguments dnf takes 
 
 ### Switch with --nuke
 This will try to manually remove binaries not detected by dnf + any associated service , dont use unless you realy overtaken by rage.

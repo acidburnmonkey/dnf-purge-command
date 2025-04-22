@@ -34,7 +34,7 @@ parser = argparse.ArgumentParser(prog='Purge command',
 
 def set_argparser(parser):
     parser.add_argument('packages', nargs='+',help=('packages to check'))
-    parser.add_argument('--nuke', dest='nuke', action='store_true' ,help=('Nuke option do not use , this will try to manually remove binaries and servises, Only takes 1 argument'))
+    parser.add_argument('--nuke', dest='nuke', action='store_true' ,help=('Nuke option do not use , this will try to manually remove binaries and services, Only takes 1 argument'))
     # parser.add_argument('-v', '--verbose')
 
 set_argparser(parser)
@@ -51,15 +51,15 @@ def main():
         exit()
 
     # Packsges arsgs here
-    pacages = args.packages    
+    packages = args.packages    
 
     home = os.path.join('/home', os.getlogin())
     show_user =[]
     string_pack = []
     exclude = set([])
 
-    string_pack.extend(pacages)
-    for index in pacages:
+    string_pack.extend(packages)
+    for index in packages:
         string_pack.append(index.capitalize())
         string_pack.append(index.upper())
         string_pack.append('.' + index)
@@ -71,13 +71,13 @@ def main():
         binary_locations=['/usr/local/bin','/usr/bin','/bin']
         for binaries in binary_locations:
             check = os.listdir(binaries)
-            if pacages[0] in check:
-                show_user.append(os.path.join(binaries,pacages[0]))
-        if os.path.exists(f'/etc/systemd/system/{pacages[0]}.service'):
-            show_user.append(f'/etc/systemd/system/{pacages[0]}.service')
+            if packages[0] in check:
+                show_user.append(os.path.join(binaries,packages[0]))
+        if os.path.exists(f'/etc/systemd/system/{packages[0]}.service'):
+            show_user.append(f'/etc/systemd/system/{packages[0]}.service')
 
     #call DNF for uninstal 
-    string_of_programs = ' '.join(pacages)
+    string_of_programs = ' '.join(packages)
     subprocess.run(f'dnf remove {string_of_programs}', shell=True)
     
     t1.start()
