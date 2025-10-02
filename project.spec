@@ -1,5 +1,5 @@
 Name:           purge-command
-Version:        1.4
+Version:        1.5
 Release:        1%{?dist}
 Summary:        DNF plugin adding apt purge functionality
 License:        GPLv3+
@@ -27,6 +27,6 @@ cp -a the-purge.py %{buildroot}/usr/bin/purge
 /usr/bin/purge
 
 %changelog
-* Sat Dec 30 2024 Acidburn Monkey <acidburnmonkey@gmail.com> - 1.4-1
-- Initial release for Copr
+* %(date "+%a %b %d %Y") Acidburn Monkey <acidburnmonkey@gmail.com> - %{version}-%{release}
+- Can exclude files now
 
