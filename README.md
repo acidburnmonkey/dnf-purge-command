@@ -46,6 +46,6 @@ sudo purge --nuke package
 
 43Sxiso2FHsYhP7HTqZgsXa3m3uHtxHQdMeHxECqRefyazZfpGVCLVsf1gU68jxJBo1G171AC181q1BqAUaG1m554MLsspG
 
-## Bitcon <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" width="60" height="60">
+## Bitcoin <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" width="60" height="60">
 
 bc1qk06cyheffclx7x434zpxjzcdl50452r9ducw0x
