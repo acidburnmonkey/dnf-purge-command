@@ -71,7 +71,6 @@ def program_candidates() -> list[str]:
     return sorted(set(list_path_cmds()))
 
 def _complete_programs(prefix: str) -> None:
-    # print one candidate per line
     for c in program_candidates():
         if c.startswith(prefix):
             print(c)
@@ -93,10 +92,6 @@ def set_argparser(parser):
         help=('Nuke option do not use , this will try to manually remove binaries and services, Only takes 1 argument'),
     )
     # parser.add_argument('-v', '--verbose')
-
-
-# set_argparser(parser)
-# args = parser.parse_args()
 
 
 def main():
@@ -203,14 +198,10 @@ def print_list(show_user):
 
 if __name__ == '__main__':
 
-
     # Early helper hooks for auto completion
     if len(sys.argv) >= 2 and sys.argv[1] == "__complete-programs":
         prefix = sys.argv[2] if len(sys.argv) > 2 else ""
         _complete_programs(prefix)
-        sys.exit(0)
-
-    if len(sys.argv) >= 3 and sys.argv[1] == "--generate-shell-completion":
         sys.exit(0)
 
     set_argparser(parser)
