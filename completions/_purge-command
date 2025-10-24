@@ -1,6 +1,5 @@
 #compdef purge
 # Zsh completion for the purge command
-#compdef -P '(* )#purge'
 
 _purge_programs() {
   local -a suggestions

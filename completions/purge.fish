@@ -5,9 +5,7 @@ function __purge_dynamic
     purge __complete-programs (commandline -ct)
 end
 
-# Provide dynamic suggestions
 complete -c purge -f -a "(__purge_dynamic)" -d "Executable programs"
 
-# Optional static flags
 complete -c purge -l nuke -d "Manually remove binaries and services"
 complete -c purge -l help -d "Show help message"
