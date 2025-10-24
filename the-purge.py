@@ -4,6 +4,7 @@
 https://github.com/acidburnmonkey/dnf-purge-command
 '''
 
+import stat
 import time
 import threading
 import os
@@ -11,6 +12,7 @@ import shutil
 import sys
 import subprocess
 import argparse
+from functools import lru_cache
 
 # the spinner thread
 flag = threading.Event()
@@ -28,6 +30,51 @@ def spinner():
 
 
 t1 = threading.Thread(target=spinner)
+
+def is_executable(path):
+    try:
+        file_info = os.stat(path)
+        # Check if it's a regular file
+        is_regular_file = stat.S_ISREG(file_info.st_mode)
+
+        has_exec_permission = bool(
+            file_info.st_mode & (
+                stat.S_IXUSR |
+                stat.S_IXGRP |
+                stat.S_IXOTH
+            )
+        )
+        return is_regular_file and has_exec_permission
+
+    except FileNotFoundError:
+        return False
+
+@lru_cache(maxsize=1)
+def list_path_cmds():
+    seen = set()
+    cmds = []
+
+    for d in filter(None, os.environ.get("PATH","").split(os.pathsep)):
+        try:
+            for name in os.listdir(d):
+                if name in seen:
+                    continue
+                full = os.path.join(d, name)
+                if is_executable(full):
+                    seen.add(name)
+                    cmds.append(name)
+        except FileNotFoundError:
+            pass
+    return sorted(cmds)
+
+def program_candidates() -> list[str]:
+    return sorted(set(list_path_cmds()))
+
+def _complete_programs(prefix: str) -> None:
+    # print one candidate per line
+    for c in program_candidates():
+        if c.startswith(prefix):
+            print(c)
 
 
 parser = argparse.ArgumentParser(
@@ -48,8 +95,8 @@ def set_argparser(parser):
     # parser.add_argument('-v', '--verbose')
 
 
-set_argparser(parser)
-args = parser.parse_args()
+# set_argparser(parser)
+# args = parser.parse_args()
 
 
 def main():
@@ -155,4 +202,18 @@ def print_list(show_user):
 
 
 if __name__ == '__main__':
+
+
+    # Early helper hooks for auto completion
+    if len(sys.argv) >= 2 and sys.argv[1] == "__complete-programs":
+        prefix = sys.argv[2] if len(sys.argv) > 2 else ""
+        _complete_programs(prefix)
+        sys.exit(0)
+
+    if len(sys.argv) >= 3 and sys.argv[1] == "--generate-shell-completion":
+        sys.exit(0)
+
+    set_argparser(parser)
+    args = parser.parse_args()
+
     main()

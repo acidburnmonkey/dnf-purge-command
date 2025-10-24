@@ -1,0 +1,12 @@
+#compdef purge
+# Zsh completion for the purge command
+
+_arguments '*:program:_purge_programs'
+
+_purge_programs() {
+  local -a suggestions
+  # Ask purge for dynamic candidates if available
+  suggestions=("${(f)$(purge __complete-programs "$words[CURRENT]")}")
+  compadd -- $suggestions
+}
+
