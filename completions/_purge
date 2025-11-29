@@ -1,10 +1,10 @@
 #compdef purge
 # Zsh completion for the purge command
 
-_purge_programs() {
+_purge() {
   local -a suggestions
   suggestions=("${(f)$(purge __complete-programs "$words[CURRENT]")}")
   compadd -- $suggestions
 }
 
-_arguments '*:program:_purge_programs'
+_purge

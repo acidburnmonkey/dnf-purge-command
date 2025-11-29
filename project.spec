@@ -1,5 +1,5 @@
 Name:           purge-command
-Version:        2.6
+Version:        2.7
 Release:        1%{?dist}
 Summary:        DNF plugin adding apt purge functionality
 License:        GPLv3+
@@ -22,8 +22,8 @@ tar -xzf %{SOURCE0}
 %install
 install -Dm755 the-purge.py %{buildroot}%{_bindir}/purge
 
-install -Dm644 completions/_purge-command \
-  %{buildroot}%{_datadir}/zsh/site-functions/_purge-command
+install -Dm644 completions/_purge \
+  %{buildroot}%{_datadir}/zsh/site-functions/_purge
 
 install -Dm644 completions/purge.bash \
   %{buildroot}%{_datadir}/bash-completion/completions/purge
@@ -33,11 +33,11 @@ install -Dm644 completions/purge.fish \
 
 %files
 %{_bindir}/purge
-%{_datadir}/zsh/site-functions/_purge-command
+%{_datadir}/zsh/site-functions/_purge
 %{_datadir}/bash-completion/completions/purge
 %{_datadir}/fish/vendor_completions.d/purge.fish
 
 %changelog
 * %(date "+%a %b %d %Y") Acidburn Monkey <acidburnmonkey@gmail.com> - %{version}-%{release}
-- added auto completion , also fixed version 1.5 -> 2.6
+- small fix to zsh auto completion
 
