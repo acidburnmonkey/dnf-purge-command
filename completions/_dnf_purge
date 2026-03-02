@@ -1,0 +1,16 @@
+#compdef dnf
+
+_dnf_purge() {
+    local -a suggestions
+    suggestions=("${(f)$(purge __complete-programs "$words[CURRENT]")}")
+    compadd -- $suggestions
+}
+
+_dnf_wrapper() {
+    case $words[2] in
+        purge) _dnf_purge ;;
+        *) _dnf ;;
+    esac
+}
+
+_dnf_wrapper
