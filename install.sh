@@ -2,6 +2,10 @@
 
 set -e
 
+# get home before escalating
+REAL_USER=${SUDO_USER:-$USER}
+USER_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+
 #escalate sudo
 if [[ $EUID -ne 0 ]]; then
     exec sudo "$0" "$@"
@@ -39,5 +43,29 @@ fi
 EOF
 
 sudo chmod +x  /usr/local/bin/dnf
+
+#bash completion
+cat << 'EOF' >> USER_HOME/.bashrc
+_dnf_wrapper() {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    local cmd=${COMP_WORDS[1]}
+
+    if [[ "$cmd" == "purge" ]]; then
+        local suggestions
+        suggestions=$(purge __complete-programs "$cur")
+        COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
+    else
+        _dnf
+    fi
+}
+
+complete -F _dnf_wrapper dnf
+EOF
+
+mkdir -p USER_HOME/.config/fish/
+#fish completion
+cat << 'EOF' >> USER_HOME/.config/fish/config.fish
+complete -c dnf -n "__fish_seen_subcommand_from purge" -f -a "(purge __complete-programs (commandline -ct))"
+EOF
 
 echo "purge command installed , reload shell to load it "

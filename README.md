@@ -1,6 +1,7 @@
 # dnf-purge-command
 
-This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal dnf remove <package> command . It can also be used to check and remove old configs of programs that are not currently installed. (DNF 5 does not support community plugins it has to be ran independently).
+It implements apt purge functionality on dnf. <br>
+This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal dnf remove <package> command . It can also be used to check and remove old configs of programs that are not currently installed.
 
 ## Installation
 
@@ -16,8 +17,9 @@ sudo dnf install purge-command
 ```
 git clone https://github.com/acidburnmonkey/dnf-purge-command.git
 cd dnf-purge-command
-sudo cp the-purge.py /usr/bin/purge
-sudo chmod +x /usr/bin/purge
+chmod +x install.sh
+sudo ./install.sh
+
 ```
 
 ## Usage
@@ -25,10 +27,8 @@ sudo chmod +x /usr/bin/purge
 Just call it from terminal
 
 ```
-sudo  purge package1 package2 package3
+sudo dnf purge package1 package2 package3
 ```
-
-Recently added support to purge same amount as arguments dnf takes
 
 ### Switch with --nuke
 
