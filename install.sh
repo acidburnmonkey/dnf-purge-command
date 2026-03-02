@@ -18,8 +18,8 @@ sudo chmod +x /usr/bin/purge
 mkdir -p /usr/share/zsh/site-functions/
 cp completions/_purge /usr/share/zsh/site-functions/
 cp completions/_dnf_purge /usr/share/zsh/site-functions/
-sudo chmod +x /usr/share/bash-completion/completions/_dnf_purge
-sudo chmod +x /usr/share/bash-completion/completions/_purge
+sudo chmod +x /usr/share/zsh/site-functions/_dnf_purge
+sudo chmod +x /usr/share/zsh/site-functions/_purge
 
 mkdir -p /usr/share/bash-completion/completions/
 cp completions/purge.bash /usr/share/bash-completion/completions/
@@ -44,27 +44,10 @@ EOF
 
 sudo chmod +x  /usr/local/bin/dnf
 
-#bash completion
-cat << 'EOF' >> USER_HOME/.bashrc
-_dnf_wrapper() {
-    local cur=${COMP_WORDS[COMP_CWORD]}
-    local cmd=${COMP_WORDS[1]}
+mkdir -p "$USER_HOME/.config/fish/"
 
-    if [[ "$cmd" == "purge" ]]; then
-        local suggestions
-        suggestions=$(purge __complete-programs "$cur")
-        COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
-    else
-        _dnf
-    fi
-}
-
-complete -F _dnf_wrapper dnf
-EOF
-
-mkdir -p USER_HOME/.config/fish/
 #fish completion
-cat << 'EOF' >> USER_HOME/.config/fish/config.fish
+cat << 'EOF' >> "$USER_HOME/.config/fish/config.fish"
 complete -c dnf -n "__fish_seen_subcommand_from purge" -f -a "(purge __complete-programs (commandline -ct))"
 EOF
 
