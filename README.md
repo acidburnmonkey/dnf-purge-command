@@ -1,44 +1,50 @@
 # dnf-purge-command
 
 It implements apt purge functionality on dnf. <br>
-This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal dnf remove <package> command . It can also be used to check and remove old configs of programs that are not currently installed.
+This is a plugin for DNF . It will call for uninstallation of the given package and seek to remove the dangling configuration files unlike the normal dnf remove <package>
+command . It can also be used to check and remove old configs of programs that are not currently installed.
 
 ## Installation
 
 ### copr-build
 
-```
+```bash
 sudo dnf copr enable acidburnmonkey/purge-command
 sudo dnf install purge-command
 ```
 
 ### Manual Installation
 
-```
+```bash
 git clone https://github.com/acidburnmonkey/dnf-purge-command.git
 cd dnf-purge-command
 chmod +x install.sh
-sudo ./install.sh
-
+./install.sh
 ```
 
 ## Usage
 
 Just call it from terminal
 
-```
+```bash
 sudo dnf purge package1 package2 package3
 ```
 
-### Switch with --nuke
+> currently auto completion (tabs) works on zsh and fish not bash
 
-This will try to manually remove binaries not detected by dnf + any associated service , don't use unless you really overtaken by rage.
+<hr>
+
+## Switch with --nuke
+
+This will try to manually remove binaries not detected by dnf + any associated service , avoid using it unless you are out of options.
 
 ```
 sudo purge --nuke package
 ```
 
-# Donate.
+<br>
+
+## Donate.
 
 <a href="https://www.buymeacoffee.com/acidburn" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
