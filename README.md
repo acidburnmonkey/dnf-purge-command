@@ -9,7 +9,7 @@ command . It can also be used to check and remove old configs of programs that a
 ### copr-build
 
 ```bash
-sudo dnf copr enable acidburnmonkey/purge-command
+sudo dnf copr enable acidburnmonkey/invigilatus
 sudo dnf install purge-command
 ```
 
