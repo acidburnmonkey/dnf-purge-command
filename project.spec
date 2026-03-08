@@ -1,5 +1,5 @@
 Name:           purge-command
-Version:        2.8
+Version:        2.9
 Release:        1%{?dist}
 Summary:        DNF plugin adding apt purge functionality
 License:        GPLv3+
