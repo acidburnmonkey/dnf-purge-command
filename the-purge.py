@@ -4,18 +4,25 @@
 https://github.com/acidburnmonkey/dnf-purge-command
 '''
 
-import stat
-import time
-import threading
+import argparse
+import functools
 import os
 import shutil
-import sys
+import stat
 import subprocess
-import argparse
-from functools import lru_cache
+import sys
+import threading
+import time
 
 # the spinner thread
 flag = threading.Event()
+
+
+class Globals:
+    home = os.path.join('/home', os.getlogin())
+    show_user = []
+    exclude = set([])
+    string_pack = []
 
 
 def spinner():
@@ -25,7 +32,6 @@ def spinner():
         i = (i + 1) % len(symbols)
         print('\r\033[K%s Searching...' % symbols[i], flush=True, end='\r')
         time.sleep(0.1)
-    # Clear the spinner line after the thread finishes
     print(' ' * 20, end='\r')
 
 
@@ -45,7 +51,7 @@ def is_executable(path):
         return False
 
 
-@lru_cache(maxsize=1)
+@functools.cache
 def list_path_cmds():
     seen = set()
     cmds = []
@@ -89,7 +95,6 @@ def set_argparser(parser):
         action='store_true',
         help=('Nuke option do not use , this will try to manually remove binaries and services, Only takes 1 argument'),
     )
-    # parser.add_argument('-v', '--verbose')
 
 
 def main():
@@ -100,13 +105,10 @@ def main():
         print("This program needs 'sudo'")
         exit()
 
-    # Packsges arsgs here
     packages = args.packages
 
-    home = os.path.join('/home', os.getlogin())
-    show_user = []
-    string_pack = []
-    exclude = set([])
+    string_pack = Globals.string_pack
+    show_user = Globals.show_user
 
     string_pack.extend(packages)
     for index in packages:
@@ -131,29 +133,14 @@ def main():
     subprocess.run(f'dnf remove {string_of_programs}', shell=True)
 
     t1.start()
-    # walk for directories
-    for root, directories, files in os.walk(home):
-        for directory in directories:
-            # packages loop
-            for pack in string_pack:
-                if pack == directory:
-                    show_user.append(os.path.join(root, directory))
-                    exclude.add(directory)
 
-    # walk for loose files
-    for root, dirs, files in os.walk(home, topdown=True):
-        [dirs.remove(d) for d in list(dirs) if d in exclude]
-        for file in files:
-            for pack in string_pack:
-                if pack == file:
-                    show_user.append(os.path.join(root, file))
+    search_path_recursive(Globals.home)
 
-    # stop spinner
     flag.set()
     t1.join()
+
     print('\n', 60 * '=')
-    # time to see what deletes
-    if len(show_user) < 1:
+    if len(Globals.show_user) < 1:
         print("No remaining files found for purging")
         sys.exit()
 
@@ -192,6 +179,20 @@ def print_list(show_user):
     for n, item in enumerate(show_user):
         print(f'({n}): {item}')
     print('🮵  ')
+
+
+# recursive search
+def search_path_recursive(path):
+    try:
+        with os.scandir(path) as entries:
+            for entry in entries:
+                if entry.name in Globals.string_pack:
+                    Globals.show_user.append(entry.path)
+                elif entry.is_dir(follow_symlinks=False) and entry.name != 'icons':
+                    search_path_recursive(entry.path)
+
+    except PermissionError:
+        pass
 
 
 if __name__ == '__main__':
